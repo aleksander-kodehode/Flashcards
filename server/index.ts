@@ -15,7 +15,7 @@ app.use(express.json());
   res.send("Hello this is front end");
 }); */
 
-app.post("/cards", async function (req: Request, res: Response) {
+app.post("/cards", async (req: Request, res: Response) => {
   const newCard = new Card({
     title: req.body.title,
   });
@@ -23,12 +23,16 @@ app.post("/cards", async function (req: Request, res: Response) {
   res.json(createdCard);
   console.log("Card saved to db");
 });
+app.get("/cards", async (req: Request, res: Response) => {
+  const cards = await Card.find();
+  res.json(cards);
+});
 
 mongoose.connect(process.env.MONGO_URL || "").then(() => {
   //Check connection
   const db = mongoose.connection;
   db.on("error", console.error.bind(console, "connection error: "));
-  db.once("open", function () {
+  db.once("open", () => {
     console.log("Connected successfully to database");
   });
 
