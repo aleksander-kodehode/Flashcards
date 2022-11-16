@@ -4,8 +4,6 @@ import dotenv from "dotenv";
 dotenv.config();
 import Card from "./models/cards";
 
-const PORT = 3500;
-
 const app = express();
 
 //Middleware
