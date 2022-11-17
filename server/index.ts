@@ -1,30 +1,24 @@
 import express, { Request, Response } from "express";
 import mongoose, { mongo } from "mongoose";
+import cors from "cors";
 import dotenv from "dotenv";
 dotenv.config();
-import Card from "./models/cards";
+import saveCard from "./routes/post/saveCard";
+import getCards from "./routes/get/getCards";
 
 const app = express();
 
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 //Middleware
 app.use(express.json());
 
-/* app.use("/", function (req: Request, res: Response) {
-  res.send("Hello this is front end");
-}); */
-
-app.post("/cards", async (req: Request, res: Response) => {
-  const newCard = new Card({
-    title: req.body.title,
-  });
-  const createdCard = await newCard.save();
-  res.json(createdCard);
-  console.log("Card saved to db");
-});
-app.get("/cards", async (req: Request, res: Response) => {
-  const cards = await Card.find();
-  res.json(cards);
-});
+//Routes
+app.use("/cards", saveCard);
+app.use("/cards", getCards);
 
 mongoose.connect(process.env.MONGO_URL || "").then(() => {
   //Check connection

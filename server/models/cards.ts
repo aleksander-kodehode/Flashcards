@@ -9,6 +9,12 @@ const CardSchema = new Schema(
       type: String,
       required: true,
     },
+    question: {
+      type: String,
+    },
+    answer: {
+      type: String,
+    },
   },
   { collection: "cards" }
 );
