@@ -1,46 +1,34 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import createStack from "./api/createStack";
+import deleteStack from "./api/deleteStack";
+import getStacks, { Card } from "./api/getStacks";
 
 function App() {
-  type Card = {
-    _id: string;
-    title: string;
-  };
-
   const [title, setTitle] = useState("");
   const [cards, setCards] = useState([] as Card[]);
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    //Send card data to server
-    const response = await fetch("http://localhost:3500/cards", {
-      headers: { "Content-Type": "application/json" },
-      method: "POST",
-      body: JSON.stringify({
-        title: title,
-      }),
-    });
-    const card = await response.json();
+    const card = await createStack(title);
     setCards([...cards, card]);
     //clear out input after request is sent
     setTitle("");
   };
   const handleDeleteCard = async (cardId: string) => {
-    await fetch(`http://localhost:3500/cards/${cardId}`, {
-      method: "DELETE",
-    });
+    await deleteStack(cardId);
     setCards(cards.filter((card) => card._id !== cardId));
   };
   //Get all cards
   useEffect(() => {
     (async () => {
-      const res = await fetch("http://localhost:3500/cards");
-      const newDecks = await res.json();
+      const newDecks = await getStacks();
       setCards(newDecks);
     })();
   }, []);
 
   return (
-    <div className="App">
+    <div className="App flex justify-center items-center flex-col gap-4">
       <div className="grid overflow-hidden grid-cols-5 gap-5">
         {cards.length > 0 &&
           cards.map((card) => {
@@ -49,9 +37,11 @@ function App() {
                 className="flex justify-center items-center relative h-40 min-h-full max-w-xs p-6 bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700"
                 key={card._id}
               >
-                <h3 className="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white">
-                  {card.title}
-                </h3>
+                <Link to={`stacks/${card._id}`}>
+                  <h3 className="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white">
+                    {card.title}
+                  </h3>
+                </Link>
                 <button
                   className="absolute top-1 right-2"
                   onClick={() => handleDeleteCard(card._id)}
