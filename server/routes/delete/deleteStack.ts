@@ -5,6 +5,7 @@ const router = express.Router();
 router.delete("/:stackId", async (req: Request, res: Response) => {
   const stackId = req.params.stackId;
   const stack = await Stack.findByIdAndDelete(stackId);
+  if (!stack) return res.status(400).send("No stack with this id");
   res.json({
     message: `Successfully delete entry: ${stack?._id}, which said: ${stack?.title}`,
   });

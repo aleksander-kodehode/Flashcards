@@ -5,8 +5,11 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import saveStack from "./routes/post/saveStack";
-import getStacks from "./routes/get/getStack";
+import saveCardToStack from "./routes/post/saveCardToStack";
+import getStacks from "./routes/get/getStacks";
+import getStack from "./routes/get/getStack";
 import deleteStack from "./routes/delete/deleteStack";
+import deleteCardFromStack from "./routes/delete/deleteCardFromStack";
 
 const app = express();
 
@@ -20,8 +23,11 @@ app.use(express.json());
 
 //Routes
 app.use("/stacks", saveStack);
+app.use("/stacks/", saveCardToStack);
 app.use("/stacks", getStacks);
+app.use("/stacks/", getStack);
 app.use("/stacks/", deleteStack);
+app.use("/stacks/", deleteCardFromStack);
 
 mongoose.connect(process.env.MONGO_URL || "").then(() => {
   //Check connection

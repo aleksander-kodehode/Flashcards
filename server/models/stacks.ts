@@ -9,8 +9,8 @@ const StackSchema = new Schema(
       type: String,
       required: true,
     },
-    question: {
-      type: String,
+    cards: {
+      type: [String],
     },
     answer: {
       type: String,
