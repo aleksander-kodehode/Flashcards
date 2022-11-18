@@ -1,5 +1,8 @@
+import { apiConfig } from "./apiConfig";
+const stackEndpoint = apiConfig.endpoints.stacks;
+
 const createStack = async (title: string) => {
-  const response = await fetch("http://localhost:3500/cards", {
+  const response = await fetch(`${apiConfig.server}${stackEndpoint}`, {
     method: "POST",
     body: JSON.stringify({
       title: title,

@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App";
 import "./index.css";
-import Page from "./pages/Page";
+import Stacks from "./pages/Stacks";
 
 const router = createBrowserRouter([
   {
@@ -12,7 +12,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/stacks/:deckId",
-    element: <Page />,
+    element: <Stacks />,
   },
 ]);
 

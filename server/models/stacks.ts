@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 const ObjectId = mongoose.Types.ObjectId;
 
-const CardSchema = new Schema(
+const StackSchema = new Schema(
   {
     title: {
       type: String,
@@ -16,9 +16,9 @@ const CardSchema = new Schema(
       type: String,
     },
   },
-  { collection: "cards" }
+  { collection: "Stacks" }
 );
 
-const CardModel = mongoose.model("Card", CardSchema);
+const StackModel = mongoose.model("Stack", StackSchema);
 
-export default CardModel;
+export default StackModel;

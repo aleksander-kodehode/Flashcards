@@ -2,11 +2,12 @@ import express, { Request, Response } from "express";
 import mongoose, { mongo } from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
-import Card from "./models/cards";
 dotenv.config();
-import saveCard from "./routes/post/saveCard";
-import getCards from "./routes/get/getCards";
-import deleteCard from "./routes/delete/deleteCard";
+
+import saveStack from "./routes/post/saveStack";
+import getStacks from "./routes/get/getStack";
+import deleteStack from "./routes/delete/deleteStack";
+
 const app = express();
 
 app.use(
@@ -18,9 +19,9 @@ app.use(
 app.use(express.json());
 
 //Routes
-app.use("/cards", saveCard);
-app.use("/cards", getCards);
-app.use("/cards/", deleteCard);
+app.use("/stacks", saveStack);
+app.use("/stacks", getStacks);
+app.use("/stacks/", deleteStack);
 
 mongoose.connect(process.env.MONGO_URL || "").then(() => {
   //Check connection

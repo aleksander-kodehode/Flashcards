@@ -1,9 +1,12 @@
+import { apiConfig } from "./apiConfig";
+const stackEndpoint = apiConfig.endpoints.stacks;
+
 export type Card = {
   _id: string;
   title: string;
 };
 const getStacks = async (): Promise<Card[]> => {
-  const res = await fetch("http://localhost:3500/cards");
+  const res = await fetch(`${apiConfig.server}${stackEndpoint}`);
   return res.json();
 };
 

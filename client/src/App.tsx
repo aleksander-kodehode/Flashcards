@@ -6,45 +6,45 @@ import getStacks, { Card } from "./api/getStacks";
 
 function App() {
   const [title, setTitle] = useState("");
-  const [cards, setCards] = useState([] as Card[]);
+  const [stacks, setStacks] = useState([] as Card[]);
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const card = await createStack(title);
-    setCards([...cards, card]);
+    const stack = await createStack(title);
+    setStacks([...stacks, stack]);
     //clear out input after request is sent
     setTitle("");
   };
-  const handleDeleteCard = async (cardId: string) => {
-    await deleteStack(cardId);
-    setCards(cards.filter((card) => card._id !== cardId));
+  const handleDeleteStack = async (stackId: string) => {
+    await deleteStack(stackId);
+    setStacks(stacks.filter((stack) => stack._id !== stackId));
   };
-  //Get all cards
+  //Get all stacks
   useEffect(() => {
     (async () => {
       const newDecks = await getStacks();
-      setCards(newDecks);
+      setStacks(newDecks);
     })();
   }, []);
 
   return (
     <div className="App flex justify-center items-center flex-col gap-4">
       <div className="grid overflow-hidden grid-cols-5 gap-5">
-        {cards.length > 0 &&
-          cards.map((card) => {
+        {stacks.length > 0 &&
+          stacks.map((stack) => {
             return (
               <div
                 className="flex justify-center items-center relative h-40 min-h-full max-w-xs p-6 bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700"
-                key={card._id}
+                key={stack._id}
               >
-                <Link to={`stacks/${card._id}`}>
+                <Link to={`stacks/${stack._id}`}>
                   <h3 className="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white">
-                    {card.title}
+                    {stack.title}
                   </h3>
                 </Link>
                 <button
                   className="absolute top-1 right-2"
-                  onClick={() => handleDeleteCard(card._id)}
+                  onClick={() => handleDeleteStack(stack._id)}
                 >
                   X
                 </button>
@@ -53,16 +53,16 @@ function App() {
           })}
       </div>
       <form className=" flex flex-col w-2/4 " onSubmit={handleFormSubmit}>
-        <label htmlFor="inputCardTitle">Set a card title</label>
+        <label htmlFor="stackTitle">Set a stack title</label>
         <input
-          id="inputCardTitle"
+          id="stackTitle"
           value={title}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             setTitle(e.target.value);
           }}
         ></input>
         <button className=" bg-blue-400 h-15 my-2 px-3 py-3 rounded-md hover:bg-blue-600 transition-colors ">
-          Create card
+          Create stack
         </button>
       </form>
     </div>
