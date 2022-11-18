@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import createStack from "./api/createStack";
-import deleteStack from "./api/deleteStack";
-import getStacks, { Card } from "./api/getStacks";
+import createStack from "../api/createStack";
+import deleteStack from "../api/deleteStack";
+import getStacks, { Card } from "../api/getStacks";
 
 function App() {
   const [title, setTitle] = useState("");
