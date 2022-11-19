@@ -11,30 +11,23 @@ function Stacks() {
   const [cards, setCards] = useState<{ question: string; answer: string }[]>(
     []
   );
-  const [question, setQuestion] = useState("");
-  const [answer, setAnswer] = useState("");
+  const [question, setQuestion] = useState("" as string);
+  const [answer, setAnswer] = useState("" as string);
   const [showError, setShowError] = useState(false);
   const { stackId } = useParams();
 
   const handleCreateCard = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      const { cards: serverCards } = await createCard(
-        stackId!,
-        question,
-        answer
-      );
-      setCards(serverCards);
-      //clear out input after request is sent
-      setQuestion("");
-      setAnswer("");
-    } catch {
-      if (question.length < 3) {
-        setShowError(true);
-      } else {
-        throw new Error("Unexpected server error");
-      }
+    if (question.length < 4 && answer.length < 4) {
+      setShowError(true);
+      return;
     }
+    const { cards: serverCards } = await createCard(stackId!, question, answer);
+    setCards(serverCards);
+    //clear out input after request is sent
+    if (showError) setShowError(false);
+    setQuestion("");
+    setAnswer("");
   };
   const handleDeleteCard = async (index: number) => {
     if (!stackId) return;
@@ -59,7 +52,10 @@ function Stacks() {
         {cards.length > 0 &&
           cards.map((card, idx) => {
             return (
-              <div className=" flex flex-col justify-center items-center">
+              <div
+                key={idx}
+                className=" flex flex-col justify-center items-center"
+              >
                 <Flipcard
                   question={card.question}
                   answer={card.answer}
@@ -74,7 +70,7 @@ function Stacks() {
       </div>
       <form className=" flex flex-col w-2/4 gap-2" onSubmit={handleCreateCard}>
         {showError ? (
-          <label htmlFor="card-question" className=" question-red-500">
+          <label htmlFor="card-question" className=" text-red-500">
             Please fill in at least 3 characters
           </label>
         ) : (
@@ -89,7 +85,7 @@ function Stacks() {
           }}
         ></input>
         {showError ? (
-          <label htmlFor="card-answer" className=" question-red-500">
+          <label htmlFor="card-answer" className=" text-red-500">
             Please fill in at least 3 characters
           </label>
         ) : (

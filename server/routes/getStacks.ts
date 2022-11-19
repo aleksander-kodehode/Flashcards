@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import Stack from "../../models/stacks";
+import Stack from "../models/stacksModel";
 const router = express.Router();
 
 router.get("/", async (req: Request, res: Response) => {

@@ -16,6 +16,7 @@
 body {
   background: #232323;
   color: rgba(255, 255, 255, 0.87);
+  box-sizing: border-box;
 }
 #root {
   display: flex;
@@ -30,8 +31,6 @@ body {
   justify-content: center;
   align-items: center;
   position: relative;
-  border-radius: 0.35rem;
-
   cursor: pointer;
   transform-style: preserve-3d;
   transition: 200ms;
@@ -54,10 +53,13 @@ body {
 }
 .card .back {
   transform: rotateY(180deg);
+  position: relative;
   background-color: rgb(63, 97, 141);
+  overflow: hidden;
 }
 .card .front,
 .card .back {
+  border-radius: 0.35rem;
   position: absolute;
   display: flex;
   justify-content: center;
@@ -66,4 +68,21 @@ body {
   height: 100%;
   padding: 1rem;
   backface-visibility: hidden;
+}
+/* padding fix for overflowing text on backside of card */
+.card .back::after,
+.card .back::before {
+  content: " ";
+  display: block;
+  background-color: rgb(63, 97, 141);
+  height: 1rem;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+}
+.card .back::after {
+  top: 0;
+}
+.card .back::before {
+  bottom: 0;
 }

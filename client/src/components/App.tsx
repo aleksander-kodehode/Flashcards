@@ -6,13 +6,17 @@ import getStacks, { Card } from "../api/getStacks";
 
 const App = () => {
   const [title, setTitle] = useState("");
+  const [showError, setShowError] = useState(false);
   const [stacks, setStacks] = useState([] as Card[]);
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    //TODO: Need some error handling or display of errors.
+    if (title.length < 4) return setShowError(true);
     const stack = await createStack(title);
     setStacks([...stacks, stack]);
     //clear out input after request is sent
+    if (!showError) setShowError(false);
     setTitle("");
   };
   const handleDeleteStack = async (stackId: string) => {
@@ -53,7 +57,13 @@ const App = () => {
           })}
       </div>
       <form className=" flex flex-col w-2/4 " onSubmit={handleFormSubmit}>
-        <label htmlFor="stackTitle">Set a stack title</label>
+        {showError ? (
+          <label htmlFor="stackTitle" className=" text-red-500">
+            Please fill in at least 4 characters
+          </label>
+        ) : (
+          <label htmlFor="stackTitle">Set stack title</label>
+        )}
         <input
           className="text-black"
           id="stackTitle"

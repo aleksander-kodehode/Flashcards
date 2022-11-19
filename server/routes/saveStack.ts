@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import Stack from "../../models/stacks";
+import Stack from "../models/stacksModel";
 const router = express.Router();
 
 router.post("/", async (req: Request, res: Response) => {
@@ -12,7 +12,7 @@ router.post("/", async (req: Request, res: Response) => {
     console.log(`Stack: ${createdStack.title} saved to db`);
   } catch {
     res.status(400);
-    res.json({ error: "Please add text to the input field" });
+    res.json({ error: "Server error" });
   }
   res.status(201);
 });

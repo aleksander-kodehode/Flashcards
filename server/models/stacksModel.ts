@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
-const ObjectId = mongoose.Types.ObjectId;
 
 const cardSchema = new Schema({
   question: {
@@ -19,9 +18,6 @@ const StackSchema = new Schema(
       required: true,
     },
     cards: [cardSchema],
-    /*  cards: {
-      type: [String],
-    }, */
   },
   { collection: "Stacks" }
 );
