@@ -3,7 +3,7 @@ const stackEndpoint = apiConfig.endpoints.stacks;
 
 export type Card = {
   _id: string;
-  cards: string[];
+  cards: { question: string; answer: string }[];
   title: string;
 };
 const getStacks = async (): Promise<Card[]> => {

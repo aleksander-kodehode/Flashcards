@@ -3,18 +3,25 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 const ObjectId = mongoose.Types.ObjectId;
 
+const cardSchema = new Schema({
+  question: {
+    type: String,
+  },
+  answer: {
+    type: String,
+  },
+});
+
 const StackSchema = new Schema(
   {
     title: {
       type: String,
       required: true,
     },
-    cards: {
+    cards: [cardSchema],
+    /*  cards: {
       type: [String],
-    },
-    answer: {
-      type: String,
-    },
+    }, */
   },
   { collection: "Stacks" }
 );

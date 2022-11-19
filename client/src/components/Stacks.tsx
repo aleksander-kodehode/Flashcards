@@ -4,23 +4,32 @@ import createCard from "../api/createCard";
 import deleteCard from "../api/deleteCard";
 import getStack from "../api/getStack";
 import { Card } from "../api/getStacks";
+import Flipcard from "./Flipcard";
 
 function Stacks() {
-  const [deck, setDeck] = useState<Card | undefined>();
-  const [cards, setCards] = useState<String[]>([]);
-  const [text, setText] = useState("");
+  const [stack, setStack] = useState<Card>();
+  const [cards, setCards] = useState<{ question: string; answer: string }[]>(
+    []
+  );
+  const [question, setQuestion] = useState("");
+  const [answer, setAnswer] = useState("");
   const [showError, setShowError] = useState(false);
   const { stackId } = useParams();
 
   const handleCreateCard = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const { cards: serverCards } = await createCard(stackId!, text);
+      const { cards: serverCards } = await createCard(
+        stackId!,
+        question,
+        answer
+      );
       setCards(serverCards);
       //clear out input after request is sent
-      setText("");
+      setQuestion("");
+      setAnswer("");
     } catch {
-      if (text.length < 3) {
+      if (question.length < 3) {
         setShowError(true);
       } else {
         throw new Error("Unexpected server error");
@@ -37,50 +46,63 @@ function Stacks() {
   useEffect(() => {
     if (!stackId) return;
     (async () => {
-      const newDeck = await getStack(stackId);
-      setDeck(newDeck);
-      setCards(newDeck.cards);
+      const newStack = await getStack(stackId);
+      setStack(newStack);
+      setCards(newStack.cards);
     })();
   }, [stackId]);
 
   return (
-    <div className="App flex justify-center items-center flex-col gap-4">
+    <div className="flex justify-center items-center flex-col gap-4">
+      <h2 className=" question-4xl">{stack?.title}</h2>
       <div className="grid overflow-hidden grid-cols-5 gap-5">
         {cards.length > 0 &&
           cards.map((card, idx) => {
             return (
-              <div
-                className="flex justify-center items-center relative h-40 min-h-full max-w-xs p-6 bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700"
-                key={idx}
-              >
-                <h3 className="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white">
-                  {card}
-                </h3>
-                <button
-                  className="absolute top-1 right-2"
-                  onClick={() => handleDeleteCard(idx)}
-                >
-                  X
+              <div className=" flex flex-col justify-center items-center">
+                <Flipcard
+                  question={card.question}
+                  answer={card.answer}
+                  idx={idx}
+                />
+                <button className="" onClick={() => handleDeleteCard(idx)}>
+                  Delete card
                 </button>
               </div>
             );
           })}
       </div>
-      <form className=" flex flex-col w-2/4 " onSubmit={handleCreateCard}>
+      <form className=" flex flex-col w-2/4 gap-2" onSubmit={handleCreateCard}>
         {showError ? (
-          <label htmlFor="card-text" className=" text-red-500">
+          <label htmlFor="card-question" className=" question-red-500">
             Please fill in at least 3 characters
           </label>
         ) : (
-          <label htmlFor="card-text">Set a card title</label>
+          <label htmlFor="card-question">Set card question</label>
         )}
         <input
-          id="card-text"
-          value={text}
+          id="card-question"
+          className=" text-black"
+          value={question}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            setText(e.target.value);
+            setQuestion(e.target.value);
           }}
         ></input>
+        {showError ? (
+          <label htmlFor="card-answer" className=" question-red-500">
+            Please fill in at least 3 characters
+          </label>
+        ) : (
+          <label htmlFor="card-answer">Set card answer</label>
+        )}
+        <textarea
+          id="card-question"
+          className=" text-black"
+          value={answer}
+          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
+            setAnswer(e.target.value);
+          }}
+        ></textarea>
         <button className=" bg-blue-400 h-15 my-2 px-3 py-3 rounded-md hover:bg-blue-600 transition-colors ">
           Create card
         </button>

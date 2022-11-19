@@ -4,7 +4,7 @@ import createStack from "../api/createStack";
 import deleteStack from "../api/deleteStack";
 import getStacks, { Card } from "../api/getStacks";
 
-function App() {
+const App = () => {
   const [title, setTitle] = useState("");
   const [stacks, setStacks] = useState([] as Card[]);
 
@@ -55,6 +55,7 @@ function App() {
       <form className=" flex flex-col w-2/4 " onSubmit={handleFormSubmit}>
         <label htmlFor="stackTitle">Set a stack title</label>
         <input
+          className="text-black"
           id="stackTitle"
           value={title}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,6 +68,6 @@ function App() {
       </form>
     </div>
   );
-}
+};
 
 export default App;
